@@ -238,38 +238,13 @@
 			
 			function reload() {
 				var t = window.location.search.match(/[?&]t(=([^&#]*)|&|#|$)/)
-				var st = window.location.search.match(/[?&]st(=([^&#]*)\/|&|#|$)/)
+				var st = window.location.search.match(/[?&]st(=([^&#]*)|\/|&|#|$)/)
 				if (t && st) {
 					document.getElementById("title").innerHTML = titleFromURL(decodeURI(t[2]));
 					document.getElementById("subtitle").innerHTML = subtitleFromURL(decodeURI(st[2]));
 				} else {
 					revise();
 				}
-			}
-			function parseTitle(t) {
-				var t = ""
-				var n = ""
-				var format = getTitle();
-				
-				for(var i=0; i<t.length; i++) {
-					if (t[i] == '-') {
-						;
-					} else if (t[i] == 'V') {
-						t += getVerb();
-					} else if (t[i] == 'N') {
-						n = getNoun();
-						t += n;
-					} else if (t[i] == 'A') {
-						t += getAdj();
-					} else if (t[i] == "2") {
-						t += n;
-					} else {
-						t += t[i];
-					}
-				}
-			}
-			function parseSubttitle(s) {
-				
 			}
 		</script>
 	</body>
