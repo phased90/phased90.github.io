@@ -76,7 +76,7 @@
 			      </div>
 			      <div class="inner cover">
 			      	<p class="lead">
-			          <a href="#" class="btn btn-lg btn-default" onClick="revise()">Revise</a>
+			          <a href="javascript:;" class="btn btn-lg btn-default" onClick="revise()">Revise</a>
 			        </p>
 			      </div>
 			      <div class="mastfoot">
@@ -96,6 +96,7 @@
 			//document.getElementById("bg-img").style.backgroundImage = "linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url('Library" + n + ".jpg')";
 			document.getElementById("bg-img").style.backgroundImage = "url('Library" + n + ".jpg')";
 			document.getElementById("bg-img").style.backgroundPosition = "center center;";
+			reload();
 		});
 			var nouns = ["Ontology", "Hermeneutics", "Phenomenology", "Perspectives", "Historiography", "Deconstruction", "Theories", "Analysis", "Moralizing", "Objecthood", "Existence", "Queer Theory", "Frameworks", "Identity", "Justice", "Oppression", "Thought", "Power", "Reality", "Currencies", "Distraction", "Conflict", "Hierarchies", "Agendas", "Cultures", "Absolutes", "Gender", "Ideas", "Boundaries", "Foundations", "Violence", "Crises", "Acquiescence", "Rationales", "Liberation", "Ethnobotany", "Theologies", "Peer-review", "Tautologies", "Eschatology", "Binaries", "Liberalism", "Definitions", "Balkanization", "Behavior", "Language", "Media", "Representations", "Stereotypes", "Narratives", "Landscapes", "Beliefs", "Worldviews", "Attitudes", "Hegemony", "Privilege", "Exploitation", "Neofeudalism", "Masculinity", "Empire", "Dichotomies", "Imperatives", "Personhood", "Literature", "Nihilism", "Dialectics", "Paradigms", "Communities", "Homogeneity", "Syndicalism", "Empiricism", "Reductionism", "War", "Relativism", "Politics", "Struggle", "Intent", "Debate", "Platitudes", "Posturing", "Activism", "Communism", "Capital", "Ideology", "Statehood", "Brinksmanship", "Dialogue", "Colonialism", "Realpolitik", "Movements", "Globalism", "Literacy", "Aggression", "Mythologies", "Ethnographies"];
 			var adjec = ["Referential", "Ontological", "Interpersonal", "Race-based", "Wholesale", "Historical", "Provincial", "Biblical", "Parochial", "Subjective", "Self-Referential", "Academic", "Platonic", "Existing", "Political", "Social", "Physical", "Sexual", "Dynamic", "Psychosexual", "Semantic", "Modern", "Postmodern", "Artistic", "Secular", "Technological", "Prevailing", "Feminist", "Anthropocentric", "Powerful", "Systemic", "Revisionist", "Agricultural", "Environmental", "Emerging", "Communal", "Teleological", "Socioeconomic", "Paternalistic", "Statistical", "Anonymous", "International", "Post 9/11", "Mainstream", "Digital", "Collective", "Intrapersonal", "Civic", "Interfaith", "Judeo-Christian", "Evolutionary", "Traditional", "Elitist", "Toxic", "East-West", "Atheistic", "Prescriptive", "Antithetical", "Hegelian", "Epistemological", "Urban", "Heterogeneous", "Analytic", "<i>De Facto</i>", "Cognitive", "Indefensible", "Self-evident", "<i>Ad Hoc</i>", "Conventional", "Indigenous", "Free-Market", "Real", "Corporate", "Imminent", "Humanitarian", "Left-Right", "Nominal", "Marginalized", "Disenfranchised", "Equitable", "Authoritarian", "Grassroots", "Quantum", "Game-Theoretic", "<i>Ceteris Paribus</i>"];
@@ -103,61 +104,173 @@
 			var titles = ["N of N:", "The A N of N:", "Contrasting A N and A 2:", "N, N, and N:", "N and N:", "V A N:", "A N or A N?", "N and '2':", "A N and A N:", "N, N, and the Future of N:", "N, A 2, and A 2:", "N: Friend or Foe?"];
 			var subtitles = ["V the A N of A N", "V A N as a Tool for V A N", "Using A N as a Lens for V A N", "Why V A N Matters", "The Unique Challenge of V A N", "How A N and A N are Changing the A Landscape", "V A N and V A N", "How A N and A N are V A N", "Why A Interpretations of A N are Fundamentally Flawed", "Towards the A N of A N", "A N, A N, and the N of A N", "V the A Crisis of A N", "Towards the A Theory of A N"];
 			function revise() {
-				title();
-				subtitle();
+				var t = title();
+				var st = subtitle();
+				history.pushState('', '', '?t='+encodeURI(t)+'&st='+encodeURI(st));
 			}
+			
+			//Construct a title and create the URL for it
 			function title() {
 				var t = ""
-				var n = ""
+				var m = ""
+				var url = ""
+				
 				var format = getTitle();
+				url += format;
+				format = titles[format];
 				for(var i=0; i<format.length; i++) {
 					if (format[i] == 'V') {
-						t += getVerb();
+						var v = getVerb();
+						t += verbs[v];
+						url += " " + v;
 					} else if (format[i] == 'N') {
-						n = getNoun();
-						t += n;
+						m = getNoun();
+						t += nouns[m];
+						url += " " + m;
 					} else if (format[i] == 'A') {
-						t += getAdj();
+						var a = getAdj();
+						t += adjec[a];
+						url += " " + a;
 					} else if (format[i] == "2") {
-						t += n;
+						t += nouns[m];
+						url += " " + m;
 					} else {
 						t += format[i];
 					}
 				}
 				document.getElementById("title").innerHTML = t;
+				return url;
 			}
 			function subtitle() {
 				var s = ""
+				var url = ""
 				var format = getSubtitle();
+				url += format;
+				format = subtitles[format];
 				for(var i=0; i<format.length; i++) {
 					if (format[i] == 'V') {
-						s += getVerb();
+						var v = getVerb();
+						url += " " + v;
+						s += verbs[v];
 					} else if (format[i] == 'N') {
-						s += getNoun();
+						var n = getNoun();
+						s += nouns[n];
+						url += " " + n;
 					} else if (format[i] == 'A') {
-						s += getAdj();
+						var a = getAdj();
+						s += adjec[a];
+						url += " " + a;
 					} else {
 						s += format[i];
 					}
 				}
 				document.getElementById("subtitle").innerHTML = s;
+				return url;
 			}
 			function getNoun() {
-				return nouns[Math.floor(Math.random()*nouns.length)];
+				return Math.floor(Math.random()*nouns.length);
 			}
 			function getAdj() {
-				return adjec[Math.floor(Math.random()*adjec.length)];
+				return Math.floor(Math.random()*adjec.length);
 			}
 			function getVerb() {
-				return verbs[Math.floor(Math.random()*verbs.length)];
+				return Math.floor(Math.random()*verbs.length);
 			}
 			function getTitle() {
-				return titles[Math.floor(Math.random()*titles.length)];
+				return Math.floor(Math.random()*titles.length);
 			}
 			function getSubtitle() {
-				return subtitles[Math.floor(Math.random()*subtitles.length)];
+				return Math.floor(Math.random()*subtitles.length);
 			}
-			revise();
+			
+			function titleFromURL(url) {
+				var values = url.split(" ");
+				var format = titles[values[0]];
+				var t = "";
+				for (var i=0, j=1; i<format.length; i++) {
+					switch(format[i]) {
+						case 'A':
+							t += adjec[values[j]];
+							j++;
+							break;
+						case 'N':
+							t += nouns[values[j]];
+							j++;
+							break;
+						case '2':
+							t += nouns[values[j]];
+							j++;
+							break;
+						case 'V':
+							t += verbs[values[j]];
+							j++;
+							break;
+						default:
+							t += format[i];
+					}
+				}
+				return t;
+			}
+			function subtitleFromURL(url) {
+				var values = url.split(" ");
+				var format = subtitles[values[0]];
+				var st = "";
+				for (var i=0, j=1; i<format.length; i++) {
+					switch(format[i]) {
+						case 'A':
+							st += adjec[values[j]];
+							j++;
+							break;
+						case 'N':
+							st += nouns[values[j]];
+							j++;
+							break;
+						case 'V':
+							st += verbs[values[j]];
+							j++;
+							break;
+						default:
+							st += format[i];
+					}
+				}
+				return st;
+			}
+			
+			function reload() {
+				var t = window.location.search.match(/[?&]t(=([^&#]*)|&|#|$)/)
+				var st = window.location.search.match(/[?&]st(=([^&#]*)\/|&|#|$)/)
+				if (t && st) {
+					document.getElementById("title").innerHTML = titleFromURL(decodeURI(t[2]));
+					document.getElementById("subtitle").innerHTML = subtitleFromURL(decodeURI(st[2]));
+				} else {
+					revise();
+				}
+			}
+			function parseTitle(t) {
+				var t = ""
+				var n = ""
+				var format = getTitle();
+				
+				for(var i=0; i<t.length; i++) {
+					if (t[i] == '-') {
+						;
+					} else if (t[i] == 'V') {
+						t += getVerb();
+					} else if (t[i] == 'N') {
+						n = getNoun();
+						t += n;
+					} else if (t[i] == 'A') {
+						t += getAdj();
+					} else if (t[i] == "2") {
+						t += n;
+					} else {
+						t += t[i];
+					}
+				}
+			}
+			function parseSubttitle(s) {
+				
+			}
 		</script>
 	</body>
 </html>
